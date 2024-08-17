@@ -6,6 +6,7 @@ export const EntryContext = createContext<EntryContextType | null>(null);
 
 export const EntryProvider: React.FC<{children : ReactNode}> = ({children}) => {
     const [entries, setEntries] = useState<Entry[]>([]);
+    const [darkMode, setDarkMode] = useState<boolean>(false);
 
     const initState = async () => {
         const data = await axios.get<Entry[]>('http://localhost:3001/get/')
@@ -16,6 +17,17 @@ export const EntryProvider: React.FC<{children : ReactNode}> = ({children}) => {
     useEffect(() => {
         initState()
       }, []);
+
+    // update DOM and local storage
+    useEffect(() => {
+      document.documentElement.classList.toggle('dark', darkMode);
+      localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    }, [darkMode]);
+
+    // Toggle dark mode
+    const toggleDarkMode = () => {
+      setDarkMode((curr) => !curr);
+    }
 
     const saveEntry = async (entry: Entry) => {
         const requestData = await axios.post<Entry>('http://localhost:3001/create/', entry)
@@ -37,7 +49,7 @@ export const EntryProvider: React.FC<{children : ReactNode}> = ({children}) => {
         setEntries(e => e.filter(entry => entry.id != id))
     }
     return (
-        <EntryContext.Provider value={{ entries, saveEntry, updateEntry, deleteEntry }}>
+        <EntryContext.Provider value={{ entries, saveEntry, updateEntry, deleteEntry, toggleDarkMode }}>
           {children}
         </EntryContext.Provider>
       )

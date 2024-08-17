@@ -14,5 +14,8 @@
   },
   "lint-staged": {
     "**/*": "prettier --ignore-path .prettierignore --ignore-unknown --write"
+  },
+  "dependencies": {
+    "react-icons": "^5.3.0"
   }
 }
