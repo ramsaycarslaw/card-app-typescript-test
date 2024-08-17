@@ -8,7 +8,7 @@ export default function NavBar() {
   const { toggleDarkMode } = useContext(EntryContext) as EntryContextType;
 
   return (
-    <nav className="flex justify-center gap-5">
+    <nav className="flex justify-center gap-5 bg-gray-100 dark:bg-gray-900 mb-10">
       <NavLink
         className="m-3 p-4 text-xl rounded-md font-medium text-white bg-blue-400 hover:bg-blue-500
                      dark:bg-purple-600 dark:hover:bg-purple-700"

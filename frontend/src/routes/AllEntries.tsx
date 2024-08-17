@@ -11,9 +11,9 @@ export default function AllEntries() {
   if (entries.length === 0) {
     return (
       <section className="max-w-7xl mx-auto px-10">
-        <h1 className="text-center font-semibold text-2xl m-5 dark:text-gray-200">You don't have any card</h1>
+        <h1 className="text-center font-semibold text-2xl m-5 dark:text-gray-200">You don't have any cards</h1>
         <p className="text-center font-medium text-md dark:text-gray-400">
-          Lets{" "}
+          Let's{" "}
           <Link className="text-blue-400 underline underline-offset-1 dark:text-blue-500" to="/create">
             Create One
           </Link>

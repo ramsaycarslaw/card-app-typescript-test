@@ -1,11 +1,13 @@
 import { ChangeEvent, MouseEvent, useContext, useState } from "react";
 import { Entry, EntryContextType } from "../@types/context";
 import { EntryContext } from "../utilities/globalContext";
+import { useNavigate } from 'react-router-dom';
 
 export default function NewEntry() {
   const emptyEntry: Entry = { title: "", description: "", created_at: new Date(), scheduled: new Date() };
   const { saveEntry } = useContext(EntryContext) as EntryContextType;
   const [newEntry, setNewEntry] = useState<Entry>(emptyEntry);
+  const navigate = useNavigate();
   const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewEntry({
       ...newEntry,
@@ -15,6 +17,7 @@ export default function NewEntry() {
   const handleSend = (e: MouseEvent<HTMLButtonElement>) => {
     saveEntry(newEntry);
     setNewEntry(emptyEntry);
+    navigate("/");
   };
   return (
     <section className="flex justify-center flex-col w-fit ml-auto mr-auto mt-10 gap-5 bg-gray-300 p-8 rounded-md dark:bg-gray-900">
