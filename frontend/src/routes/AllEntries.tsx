@@ -1,8 +1,8 @@
-import { useContext } from 'react';
-import { FaPen, FaTrash } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
-import { Entry, EntryContextType } from '../@types/context';
-import { EntryContext } from '../utilities/globalContext';
+import { useContext } from "react";
+import { FaPen, FaTrash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { Entry, EntryContextType } from "../@types/context";
+import { EntryContext } from "../utilities/globalContext";
 
 export default function AllEntries() {
   const { entries, deleteEntry } = useContext(EntryContext) as EntryContextType;
@@ -11,15 +11,10 @@ export default function AllEntries() {
   if (entries.length === 0) {
     return (
       <section className="max-w-7xl mx-auto px-10">
-        <h1 className="text-center font-semibold text-2xl m-5 dark:text-gray-200">
-          You don't have any card
-        </h1>
+        <h1 className="text-center font-semibold text-2xl m-5 dark:text-gray-200">You don't have any card</h1>
         <p className="text-center font-medium text-md dark:text-gray-400">
-          Lets{' '}
-          <Link
-            className="text-blue-400 underline underline-offset-1 dark:text-blue-500"
-            to="/create"
-          >
+          Lets{" "}
+          <Link className="text-blue-400 underline underline-offset-1 dark:text-blue-500" to="/create">
             Create One
           </Link>
         </p>
@@ -38,9 +33,7 @@ export default function AllEntries() {
               className="bg-gray-300 shadow-md shadow-gray-500 p-6 rounded-lg flex flex-col justify-between dark:bg-gray-900 dark:shadow-gray-800"
             >
               <h1 className="font-bold text-sm md:text-lg dark:text-gray-200">{entry.title}</h1>
-              <p className="text-center text-lg font-light mt-3 mb-4 dark:text-gray-400">
-                {entry.description}
-              </p>
+              <p className="text-center text-lg font-light mt-3 mb-4 dark:text-gray-400">{entry.description}</p>
               <section className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-6 md:space-y-0 pt-6">
                 <div className="flex space-x-4">
                   <button

@@ -1,6 +1,6 @@
-import fastify from "fastify";
 import cors from "@fastify/cors";
 import { Entry } from "@prisma/client";
+import fastify from "fastify";
 import Prisma from "./db";
 
 export const server = fastify();
@@ -9,21 +9,18 @@ server.register(cors, {});
 
 server.get<{ Reply: Entry[] }>("/get/", async (req, reply) => {
   const dbAllEntries = await Prisma.entry.findMany({});
-  reply.send(dbAllEntries);
+  reply.status(200).send(dbAllEntries);
 });
 
-server.get<{ Body: Entry; Params: { id: string } }>(
-  "/get/:id",
-  async (req, reply) => {
-    const dbEntry = await Prisma.entry.findUnique({
-      where: { id: req.params.id },
-    });
-    if (!dbEntry) {
-      reply.status(500).send({ msg: `Error finding entry with id ${req.params.id}` });
-    }
-    reply.send(dbEntry);
+server.get<{ Body: Entry; Params: { id: string } }>("/get/:id", async (req, reply) => {
+  const dbEntry = await Prisma.entry.findUnique({
+    where: { id: req.params.id },
+  });
+  if (!dbEntry) {
+    reply.status(500).send({ msg: `Error finding entry with id ${req.params.id}` });
   }
-);
+  reply.status(200).send(dbEntry);
+});
 
 server.post<{ Body: Entry }>("/create/", async (req, reply) => {
   let newEntryBody = req.body;
@@ -35,7 +32,7 @@ server.post<{ Body: Entry }>("/create/", async (req, reply) => {
     : (newEntryBody.scheduled = new Date());
   try {
     const createdEntryData = await Prisma.entry.create({ data: req.body });
-    reply.send(createdEntryData);
+    reply.status(200).send(createdEntryData);
   } catch {
     reply.status(500).send({ msg: "Error creating entry" });
   }
@@ -44,32 +41,27 @@ server.post<{ Body: Entry }>("/create/", async (req, reply) => {
 server.delete<{ Params: { id: string } }>("/delete/:id", async (req, reply) => {
   try {
     await Prisma.entry.delete({ where: { id: req.params.id } });
-    reply.send({ msg: "Deleted successfully" });
+    reply.status(200).send({ msg: "Deleted successfully" });
   } catch {
     reply.status(500).send({ msg: "Error deleting entry" });
   }
 });
 
-server.put<{ Params: { id: string }; Body: Entry }>(
-  "/update/:id",
-  async (req, reply) => {
-    let updatedEntryBody = req.body;
-    updatedEntryBody.created_at
-      ? (updatedEntryBody.created_at = new Date(req.body.created_at))
-      : (updatedEntryBody.created_at = new Date());
-    updatedEntryBody.scheduled
-      ? (updatedEntryBody.scheduled = new Date(req.body.scheduled))
-      : (updatedEntryBody.scheduled = new Date());
-    try {
-      await Prisma.entry.update({
-        data: req.body,
-        where: { id: req.params.id },
-      });
-      reply.send({ msg: "Updated successfully" });
-    } catch {
-      reply.status(500).send({ msg: "Error updating" });
-    }
+server.put<{ Params: { id: string }; Body: Entry }>("/update/:id", async (req, reply) => {
+  let updatedEntryBody = req.body;
+  updatedEntryBody.created_at
+    ? (updatedEntryBody.created_at = new Date(req.body.created_at))
+    : (updatedEntryBody.created_at = new Date());
+  updatedEntryBody.scheduled
+    ? (updatedEntryBody.scheduled = new Date(req.body.scheduled))
+    : (updatedEntryBody.scheduled = new Date());
+  try {
+    await Prisma.entry.update({
+      data: req.body,
+      where: { id: req.params.id },
+    });
+    reply.status(200).send({ msg: "Updated successfully" });
+  } catch {
+    reply.status(500).send({ msg: "Error updating" });
   }
-);
-
-
+});
